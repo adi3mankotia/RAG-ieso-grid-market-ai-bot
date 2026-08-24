@@ -1,0 +1,48 @@
+# Ontario Grid Market AI Copilot
+
+A web-based AI chatbot that answers questions about Ontario electricity market data and IESO documents.
+
+This project combines live/recent IESO grid data from GridStatus with retrieval-augmented generation over public IESO PDF documents. The chatbot can answer questions about Ontario price, demand, fuel mix, generator output, forecasts, market concepts, reliability, and planning.
+
+## Screenshots
+
+### Web Chatbot Interface
+
+![Ontario Grid Market AI Copilot homepage](assets/screenshots/homepage.png)
+
+### Live Ontario Price Answer
+
+![Ontario price answer](assets/screenshots/ontario-price-answer.png)
+
+### IESO Document Q&A
+
+![IESO document question answer](assets/screenshots/document-qa-answer.png)
+
+### Fuel Mix API Answer
+
+![Fuel mix answer](assets/screenshots/fuel-mix-answer.png)
+
+## Features
+
+- Flask web app with a custom HTML/CSS/JavaScript chatbot interface
+- Live/recent IESO electricity market data using GridStatus
+- Retrieval-augmented generation over IESO PDF documents
+- Chroma vector database for document search
+- HuggingFace sentence-transformer embeddings for local document indexing
+- Google Gemini for routing, document answers, and hybrid answer summarization
+- Smart routing between API, document, and hybrid questions
+- Public IESO documents included in the `docs/` folder
+- Local `.env` based API key management
+
+## Example Questions
+
+The chatbot can answer questions such as:
+
+```text
+What is Ontario price?
+What is the current Ontario demand in MW?
+What is the fuel mix?
+Show generator output.
+What does IESO do?
+What is day-ahead pricing?
+How does the grid look?
