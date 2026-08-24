@@ -5,14 +5,23 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 
 def keyword_route(question: str) -> str:
     """
-    Python handles obvious questions.
+    Python handles obvious questions first.
     If the question is hard/ambiguous, return 'unclear'
     so Gemini can decide.
     """
 
     q = question.lower().strip()
 
-    
+    # Direct API/data questions
+    if "fuel mix" in q or "supply mix" in q:
+        return "api"
+
+    if "generator" in q or "generator output" in q or "plant" in q or "facility" in q:
+        return "api"
+
+    if "wind forecast" in q or "solar forecast" in q:
+        return "api"
+
     grid_status_phrases = [
         "how does the grid look",
         "how does the grid look like",
@@ -23,6 +32,7 @@ def keyword_route(question: str) -> str:
         "how is the grid",
         "how is ontario's grid",
         "how is ontario grid",
+        "grid snapshot",
     ]
 
     if any(phrase in q for phrase in grid_status_phrases):
@@ -49,8 +59,6 @@ def keyword_route(question: str) -> str:
         "price",
         "day-ahead",
         "day ahead",
-        "supply mix",
-        "fuel mix",
         "generation",
         "generating",
         "producing",
@@ -92,9 +100,6 @@ def keyword_route(question: str) -> str:
         return "documents"
 
     # Ambiguous cases go to Gemini
-    # Example: "What is Ontario price?"
-    # Example: "What is day-ahead pricing?"
-    # Example: "Is demand high?"
     if wants_docs and wants_data:
         return "unclear"
 
@@ -133,10 +138,14 @@ Examples:
 - day-ahead price for tomorrow
 - current supply mix
 - current fuel mix
+- fuel mix
+- generator output
+- wind forecast
+- solar forecast
 - how much power is Ontario using right now
+- what is the price
+- what is the Ontario price
 
-documents = The user wants definitions, explanations, background, rules, purpose, or concepts.
-Examples:
 documents = The user wants definitions, explanations, background, rules, purpose, or concepts.
 Examples:
 - what does IESO do
@@ -145,6 +154,7 @@ Examples:
 - what does zonal price mean
 - how does Ontario's electricity market work
 - what are market rules
+- what is the Annual Planning Outlook
 
 hybrid = The user wants both current/live data and explanation.
 Examples:
@@ -153,8 +163,6 @@ Examples:
 - how does the grid look today
 - summarize the current supply mix
 - is the current demand high or low
-- what is the price
-- what is the Ontario price
 
 Return only one word:
 api
@@ -205,6 +213,9 @@ if __name__ == "__main__":
         if user_question.lower() in ["exit", "quit", "q"]:
             print("Goodbye.")
             break
+
+        selected_route = route_question(user_question)
+        print(f"Route selected: {selected_route}")
 
         selected_route = route_question(user_question)
         print(f"Route selected: {selected_route}")
