@@ -319,7 +319,7 @@ If an API key is ever exposed, revoke it immediately and create a new one.
 
 ---
 
-## Resume Summary
+## Summary
 
 Built a Flask-based AI chatbot that combines live IESO electricity market data from GridStatus with retrieval-augmented generation over IESO PDF documents using LangChain, Chroma, HuggingFace embeddings, and Gemini. Implemented smart routing to answer API, document, and hybrid questions about Ontario price, demand, fuel mix, generator output, and market concepts.
 
