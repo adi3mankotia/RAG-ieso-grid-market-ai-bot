@@ -217,5 +217,4 @@ if __name__ == "__main__":
         selected_route = route_question(user_question)
         print(f"Route selected: {selected_route}")
 
-        selected_route = route_question(user_question)
-        print(f"Route selected: {selected_route}")
+        
