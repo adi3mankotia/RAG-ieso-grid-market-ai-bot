@@ -1,0 +1,15 @@
+gridstatus
+pandas
+python-dotenv
+langchain
+langchain-community
+langchain-google-genai
+google-genai
+langchain-chroma
+langchain-text-splitters
+chromadb
+pypdf
+tiktoken
+sentence-transformers
+langchain-huggingface
+flask

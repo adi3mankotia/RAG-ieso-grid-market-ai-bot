@@ -1,0 +1,16 @@
+# Secret keys
+.env
+
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Local Chroma vector database
+vector_store/
+
+# Editor/system files
+.vscode/
+.DS_Store

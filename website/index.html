@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ontario Grid Market AI Copilot</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #ffffff;
+            background:
+                linear-gradient(rgba(2, 18, 38, 0.92), rgba(2, 18, 38, 0.96)),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255, 255, 255, 0.04) 0px,
+                    rgba(255, 255, 255, 0.04) 1px,
+                    transparent 1px,
+                    transparent 70px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 255, 255, 0.04) 0px,
+                    rgba(255, 255, 255, 0.04) 1px,
+                    transparent 1px,
+                    transparent 70px
+                );
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #003b73, #0077b6, #00b4d8);
+            padding: 45px;
+            border-radius: 24px;
+            box-shadow: 0 0 40px rgba(0, 180, 216, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "⚡";
+            position: absolute;
+            right: 40px;
+            top: 25px;
+            font-size: 130px;
+            opacity: 0.18;
+            transform: rotate(12deg);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 14px;
+            margin-bottom: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 46px;
+            margin: 0 0 12px;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-size: 20px;
+            max-width: 760px;
+            line-height: 1.5;
+            color: #e9f7ff;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 18px;
+            padding: 22px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #90e0ef;
+            font-size: 21px;
+        }
+
+        .card p, .card li {
+            color: #e8f3fa;
+            line-height: 1.6;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            color: #ffd166;
+            font-weight: bold;
+        }
+
+        .chat-section {
+            margin-top: 28px;
+            background: #06131f;
+            border: 1px solid #1f6f8b;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 0 28px rgba(0, 180, 216, 0.25);
+        }
+
+        .chat-header {
+            background: #0b2538;
+            padding: 14px 18px;
+            color: #90e0ef;
+            font-weight: bold;
+            border-bottom: 1px solid #1f6f8b;
+        }
+
+        .chat-body {
+            height: 420px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #03101a;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            border-radius: 14px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .bot {
+            background: #102a3d;
+            border: 1px solid #1f6f8b;
+            color: #d7f9ff;
+        }
+
+        .user {
+            background: #0077b6;
+            margin-left: auto;
+            color: white;
+        }
+
+        .route {
+            font-size: 13px;
+            color: #ffd166;
+            margin-bottom: 8px;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: #081b29;
+            border-top: 1px solid #1f6f8b;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid #1f6f8b;
+            background: #020b12;
+            color: white;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input::placeholder {
+            color: #8bb9c8;
+        }
+
+        button {
+            padding: 14px 22px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00b4d8, #0077b6);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .examples {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .example-btn {
+            font-size: 14px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #b8dce8;
+            font-size: 14px;
+        }
+
+        @media (max-width: 850px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+
+            .hero {
+                padding: 30px;
+            }
+
+            .chat-input-area {
+                flex-direction: column;
+            }
+
+            .message {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="hero">
+            <div class="badge">IESO • GridStatus • Chroma • Gemini</div>
+
+            <h1>Ontario Grid Market AI Copilot</h1>
+
+            <p class="tagline">
+                Ask questions about Ontario electricity market data, IESO grid conditions,
+                pricing, demand, fuel mix, generators, forecasts, and market documents.
+            </p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>⚡ Live Grid Data</h2>
+                <p>The chatbot retrieves live or recent IESO data using GridStatus.</p>
+                <ul>
+                    <li>Ontario price</li>
+                    <li>Demand and load in MW</li>
+                    <li>Fuel mix and supply mix</li>
+                    <li>Generator output</li>
+                    <li>Wind and solar forecasts</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>📄 Document Intelligence</h2>
+                <p>
+                    The chatbot searches preloaded IESO PDF documents using Chroma
+                    and retrieval-augmented generation.
+                </p>
+                <ul>
+                    <li>IESO role and responsibilities</li>
+                    <li>Ontario Price explanations</li>
+                    <li>Day-ahead pricing concepts</li>
+                    <li>Reliability and planning documents</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🧠 Smart Routing</h2>
+                <p>
+                    A router decides whether your question needs live data,
+                    document search, or both.
+                </p>
+                <ul>
+                    <li><span class="highlight">API/Data library</span> for current numbers like demand</li>
+                    <li><span class="highlight">Documents</span> for explanations</li>
+                    <li><span class="highlight">Hybrid</span> for both</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="chat-section">
+            <div class="chat-header">Ask the IESO Copilot</div>
+
+            <div class="chat-body" id="chatBody">
+                <div class="message bot">
+                    Hi! I am your Ontario Grid Market AI Copilot.
+                    Ask me about Ontario price, demand, fuel mix, generator output, IESO documents, or how the grid looks.
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input
+                    id="questionInput"
+                    type="text"
+                    placeholder="Type your question here..."
+                    onkeydown="handleKeyPress(event)"
+                >
+                <button id="sendButton" onclick="sendQuestion()">Send</button>
+            </div>
+        </section>
+
+        <div class="examples">
+            <button class="example-btn" onclick="useExample('What is Ontario price?')">Ontario price</button>
+            <button class="example-btn" onclick="useExample('What is the current Ontario demand in MW?')">Current demand</button>
+            <button class="example-btn" onclick="useExample('What is the fuel mix?')">Fuel mix</button>
+            <button class="example-btn" onclick="useExample('Show generator output.')">Generator output</button>
+            <button class="example-btn" onclick="useExample('What does IESO do?')">What does IESO do?</button>
+            <button class="example-btn" onclick="useExample('How does the grid look?')">Grid snapshot</button>
+        </div>
+
+        <div class="footer">
+            Built with Python, Flask, GridStatus, LangChain, Chroma, HuggingFace embeddings, and Gemini.
+        </div>
+    </div>
+
+    <script>
+        const chatBody = document.getElementById("chatBody");
+        const questionInput = document.getElementById("questionInput");
+        const sendButton = document.getElementById("sendButton");
+
+        function addMessage(text, sender, route = null) {
+            const message = document.createElement("div");
+            message.classList.add("message", sender);
+
+            if (route) {
+                const routeLabel = document.createElement("div");
+                routeLabel.classList.add("route");
+                routeLabel.textContent = "Route selected: " + route;
+                message.appendChild(routeLabel);
+            }
+
+            const content = document.createElement("div");
+            content.textContent = text;
+            message.appendChild(content);
+
+            chatBody.appendChild(message);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendQuestion();
+            }
+        }
+
+        function useExample(question) {
+            questionInput.value = question;
+            sendQuestion();
+        }
+
+        async function sendQuestion() {
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                return;
+            }
+
+            addMessage(question, "user");
+            questionInput.value = "";
+            sendButton.disabled = true;
+            sendButton.textContent = "Thinking...";
+
+            addMessage("Fetching answer...", "bot");
+
+            try {
+                const response = await fetch("/ask", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ question: question })
+                });
+
+                const data = await response.json();
+
+                chatBody.removeChild(chatBody.lastChild);
+                addMessage(data.answer, "bot", data.route);
+
+            } catch (error) {
+                chatBody.removeChild(chatBody.lastChild);
+                addMessage("Something went wrong while contacting the chatbot server.", "bot", "error");
+            }
+
+            sendButton.disabled = false;
+            sendButton.textContent = "Send";
+        }
+    </script>
+</body>
+</html>
